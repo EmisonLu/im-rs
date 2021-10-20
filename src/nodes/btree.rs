@@ -135,6 +135,11 @@ impl<A> Node<A> {
     }
 
     #[inline]
+    fn is_leaf(&self) -> bool {
+        self.children[0].is_none()
+    }
+
+    #[inline]
     pub(crate) fn unit(value: A) -> Self {
         Node {
             keys: Chunk::unit(value),
@@ -427,7 +432,7 @@ impl<A: BTreeValue> Node<A> {
                 None if index == 0 => Vec::new(),
                 None => match self.keys.get(index - 1) {
                     Some(_) => {
-                        path.push((self, index - 1));
+                        path.push((self, index));
                         path
                     }
                     None => Vec::new(),
@@ -638,35 +643,26 @@ impl<A: BTreeValue> Node<A> {
                 match (&self.children[index], &self.children[index + 1]) {
                     // If we're a leaf, just delete the entry.
                     (&None, &None) => RemoveAction::DeleteAt(index),
-                    // Right is empty. Attempt to steal from left if enough capacity,
-                    // otherwise pull the predecessor up.
-                    (&Some(ref left), &None) => {
-                        if !left.too_small() {
-                            RemoveAction::StealFromLeft(index + 1)
-                        } else {
+                    // If the left hand child has capacity, pull the predecessor up.
+                    (&Some(ref left), _) if !left.too_small() => {
+                        if left.is_leaf() {
                             RemoveAction::PullUp(left.keys.len() - 1, index, index)
-                        }
-                    }
-                    // Left is empty. Attempt to steal from right if enough capacity,
-                    // otherwise pull the successor up.
-                    (&None, &Some(ref right)) => {
-                        if !right.too_small() {
-                            RemoveAction::StealFromRight(index)
                         } else {
-                            RemoveAction::PullUp(0, index, index + 1)
-                        }
-                    }
-                    // Both left and right are non empty. Attempt to steal from left or
-                    // right if enough capacity, otherwise just merge the children.
-                    (&Some(ref left), &Some(ref right)) => {
-                        if left.has_room() && !right.too_small() {
-                            RemoveAction::StealFromRight(index)
-                        } else if right.has_room() && !left.too_small() {
                             RemoveAction::StealFromLeft(index + 1)
-                        } else {
-                            RemoveAction::Merge(index)
                         }
                     }
+                    // If the right hand child has capacity, pull the successor up.
+                    (_, &Some(ref right)) if !right.too_small() => {
+                        if right.is_leaf() {
+                            RemoveAction::PullUp(0, index, index + 1)
+                        } else {
+                            RemoveAction::StealFromRight(index)
+                        }
+                    }
+                    // If neither child has capacity, we'll have to merge them.
+                    (&Some(_), &Some(_)) => RemoveAction::Merge(index),
+                    // If one child exists and the other doesn't, we're in a bad state.
+                    _ => unreachable!(),
                 }
             }
             // Key is adjacent to some key in node

@@ -2354,19 +2354,19 @@ mod test {
 
     #[test]
     fn ranged_iter() {
-        let map: OrdMap<i32, i32> = ordmap![1=>2, 2=>3, 3=>4, 4=>5, 5=>6, 7=>8];
+        let map: OrdMap<i32, i32> = ordmap![1=>2, 2=>3, 3=>4, 4=>5, 5=>6];
         let range: Vec<(i32, i32)> = map.range(..).map(|(k, v)| (*k, *v)).collect();
-        assert_eq!(vec![(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (7, 8)], range);
+        assert_eq!(vec![(1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], range);
         let range: Vec<(i32, i32)> = map.range(..).rev().map(|(k, v)| (*k, *v)).collect();
-        assert_eq!(vec![(7, 8), (5, 6), (4, 5), (3, 4), (2, 3), (1, 2)], range);
+        assert_eq!(vec![(5, 6), (4, 5), (3, 4), (2, 3), (1, 2)], range);
         let range: Vec<(i32, i32)> = map.range(2..5).map(|(k, v)| (*k, *v)).collect();
         assert_eq!(vec![(2, 3), (3, 4), (4, 5)], range);
         let range: Vec<(i32, i32)> = map.range(2..5).rev().map(|(k, v)| (*k, *v)).collect();
         assert_eq!(vec![(4, 5), (3, 4), (2, 3)], range);
         let range: Vec<(i32, i32)> = map.range(3..).map(|(k, v)| (*k, *v)).collect();
-        assert_eq!(vec![(3, 4), (4, 5), (5, 6), (7, 8)], range);
+        assert_eq!(vec![(3, 4), (4, 5), (5, 6)], range);
         let range: Vec<(i32, i32)> = map.range(3..).rev().map(|(k, v)| (*k, *v)).collect();
-        assert_eq!(vec![(7, 8), (5, 6), (4, 5), (3, 4)], range);
+        assert_eq!(vec![(5, 6), (4, 5), (3, 4)], range);
         let range: Vec<(i32, i32)> = map.range(..4).map(|(k, v)| (*k, *v)).collect();
         assert_eq!(vec![(1, 2), (2, 3), (3, 4)], range);
         let range: Vec<(i32, i32)> = map.range(..4).rev().map(|(k, v)| (*k, *v)).collect();
@@ -2375,36 +2375,19 @@ mod test {
         assert_eq!(vec![(1, 2), (2, 3), (3, 4)], range);
         let range: Vec<(i32, i32)> = map.range(..=3).rev().map(|(k, v)| (*k, *v)).collect();
         assert_eq!(vec![(3, 4), (2, 3), (1, 2)], range);
-        let range: Vec<(i32, i32)> = map.range(..6).map(|(k, v)| (*k, *v)).collect();
-        assert_eq!(vec![(1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], range);
-        let range: Vec<(i32, i32)> = map.range(..=6).map(|(k, v)| (*k, *v)).collect();
-        assert_eq!(vec![(1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], range);
-    }
-
-    #[test]
-    fn issue_124() {
-        let mut map = OrdMap::new();
-        let contents = include_str!("test-fixtures/issue_124.txt");
-        for line in contents.lines() {
-            if line.starts_with("insert ") {
-                map.insert(line[7..].parse::<u32>().unwrap(), 0);
-            } else if line.starts_with("remove ") {
-                map.remove(&line[7..].parse::<u32>().unwrap());
-            }
-        }
     }
 
     proptest! {
         #[test]
         fn length(ref input in collection::btree_map(i16::ANY, i16::ANY, 0..1000)) {
             let map: OrdMap<i32, i32> = OrdMap::from(input.clone());
-            assert_eq!(input.len(), map.len());
+            input.len() == map.len()
         }
 
         #[test]
         fn order(ref input in collection::hash_map(i16::ANY, i16::ANY, 0..1000)) {
             let map: OrdMap<i32, i32> = OrdMap::from(input.clone());
-            assert!(is_sorted(map.keys()));
+            is_sorted(map.keys())
         }
 
         #[test]

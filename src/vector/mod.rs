@@ -983,7 +983,7 @@ impl<A: Clone> Vector<A> {
         }
 
         if self.is_empty() {
-            *self = other;
+            replace(self, other);
             return;
         }
 
@@ -1401,7 +1401,7 @@ impl<A: Clone> Vector<A> {
     /// Remove an element from a vector.
     ///
     /// Remove the element from position 'index', shifting all
-    /// elements after it to the left, and return the removed element.
+    /// elements after it to the left, and return the removec element.
     ///
     /// ## Performance Note
     ///

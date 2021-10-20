@@ -33,7 +33,6 @@ use std::ops::{Add, Deref, Mul};
 
 use crate::nodes::hamt::{hash_key, Drain as NodeDrain, HashValue, Iter as NodeIter, Node};
 use crate::ordset::OrdSet;
-use crate::Vector;
 use crate::util::{Pool, PoolRef, Ref};
 
 /// Construct a set from a sequence of values.
@@ -972,26 +971,6 @@ where
 {
     fn from(vec: &Vec<A>) -> Self {
         vec.iter().cloned().collect()
-    }
-}
-
-impl<A, S> From<Vector<A>> for HashSet<A, S>
-where
-    A: Hash + Eq + Clone,
-    S: BuildHasher + Default,
-{
-    fn from(vector: Vector<A>) -> Self {
-        vector.into_iter().collect()
-    }
-}
-
-impl<'a, A, S> From<&'a Vector<A>> for HashSet<A, S>
-where
-    A: Hash + Eq + Clone,
-    S: BuildHasher + Default,
-{
-    fn from(vector: &Vector<A>) -> Self {
-        vector.iter().cloned().collect()
     }
 }
 
