@@ -17,6 +17,8 @@
 //! [hashmap::HashMap]: ../hashmap/struct.HashMap.html
 //! [std::cmp::Ord]: https://doc.rust-lang.org/std/cmp/trait.Ord.html
 
+use std::prelude::v1::*;
+
 use std::borrow::Borrow;
 use std::cmp::Ordering;
 use std::collections;

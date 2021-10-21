@@ -2,6 +2,8 @@
 //!
 //! These are only available when using the `rayon` feature flag.
 
+use std::prelude::v1::*;
+
 use super::*;
 use ::rayon::iter::plumbing::{bridge, Consumer, Producer, ProducerCallback, UnindexedConsumer};
 use ::rayon::iter::{

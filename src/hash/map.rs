@@ -21,6 +21,8 @@
 //! [std::hash::Hash]: https://doc.rust-lang.org/std/hash/trait.Hash.html
 //! [std::collections::hash_map::RandomState]: https://doc.rust-lang.org/std/collections/hash_map/struct.RandomState.html
 
+use std::prelude::v1::*;
+
 use std::borrow::Borrow;
 use std::cmp::Ordering;
 use std::collections;

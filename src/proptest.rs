@@ -2,6 +2,8 @@
 //!
 //! These are only available when using the `proptest` feature flag.
 
+use std::prelude::v1::*;
+
 use crate::{HashMap, HashSet, OrdMap, OrdSet, Vector};
 use ::proptest::collection::vec;
 use ::proptest::strategy::{BoxedStrategy, Strategy, ValueTree};

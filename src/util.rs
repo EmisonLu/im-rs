@@ -4,6 +4,8 @@
 
 // Every codebase needs a `util` module.
 
+use std::prelude::v1::*;
+
 use std::cmp::Ordering;
 use std::ops::{Bound, IndexMut, Range, RangeBounds};
 use std::ptr;

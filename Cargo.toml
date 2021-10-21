@@ -14,7 +14,6 @@ keywords = ["immutable", "persistent", "hamt", "b-tree", "rrb-tree"]
 build = "./build.rs"
 exclude = [
     "dist/**",
-    "rc/**",
     "release.toml",
     "Makefile.toml",
     "proptest-regressions/**"
@@ -37,16 +36,19 @@ debug = []
 
 [dependencies]
 typenum = "1.12"
-bitmaps = "2"
-sized-chunks = "0.6"
-rand_core = "0.5.1"
-rand_xoshiro = "0.4"
+bitmaps = { version = "2.1", default-features = false }
+sized-chunks = { git = "https://github.com/EmisonLu/sized-chunks.git" }
+rand_core = { git = "https://github.com/mesalock-linux/rand-sgx.git" }
+# rand_xoshiro = "0.4"
 quickcheck = { version = "0.9", optional = true }
 proptest = { version = "0.9", optional = true }
 serde = { version = "1", optional = true }
 rayon = { version = "1", optional = true }
 refpool = { version = "0.4", optional = true }
 arbitrary = { version = "0.4", optional = true }
+
+[target.'cfg(not(target_env = "sgx"))'.dependencies]
+sgx_tstd = { version = "1.0", rev = "v1.1.3", git = "https://github.com/apache/teaclave-sgx-sdk.git", features=["untrusted_fs","thread", "backtrace"] }
 
 [dev-dependencies]
 proptest = "0.9"

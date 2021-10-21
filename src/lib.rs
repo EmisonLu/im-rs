@@ -340,6 +340,11 @@
 #![warn(unreachable_pub, missing_docs)]
 #![cfg_attr(has_specialisation, feature(specialization))]
 
+#![no_std]
+use std::prelude::v1::*;
+#[macro_use]
+extern crate sgx_tstd as std;
+
 #[cfg(test)]
 #[macro_use]
 extern crate pretty_assertions;

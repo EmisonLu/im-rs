@@ -43,6 +43,8 @@
 //! [Vec]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 //! [VecDeque]: https://doc.rust-lang.org/std/collections/struct.VecDeque.html
 
+use std::prelude::v1::*;
+
 use std::borrow::Borrow;
 use std::cmp::Ordering;
 use std::fmt::{Debug, Error, Formatter};
@@ -1474,12 +1476,12 @@ impl<A: Clone> Vector<A> {
     /// vec.sort();
     /// assert_eq!(vector![1, 2, 3, 4, 5], vec);
     /// ```
-    pub fn sort(&mut self)
-    where
-        A: Ord,
-    {
-        self.sort_by(Ord::cmp)
-    }
+    // pub fn sort(&mut self)
+    // where
+    //     A: Ord,
+    // {
+    //     self.sort_by(Ord::cmp)
+    // }
 
     /// Sort a vector using a comparator function.
     ///
@@ -1494,15 +1496,15 @@ impl<A: Clone> Vector<A> {
     /// vec.sort_by(|left, right| left.cmp(right));
     /// assert_eq!(vector![1, 2, 3, 4, 5], vec);
     /// ```
-    pub fn sort_by<F>(&mut self, cmp: F)
-    where
-        F: Fn(&A, &A) -> Ordering,
-    {
-        let len = self.len();
-        if len > 1 {
-            sort::quicksort(self.focus_mut(), &cmp);
-        }
-    }
+    // pub fn sort_by<F>(&mut self, cmp: F)
+    // where
+    //     F: Fn(&A, &A) -> Ordering,
+    // {
+    //     let len = self.len();
+    //     if len > 1 {
+    //         sort::quicksort(self.focus_mut(), &cmp);
+    //     }
+    // }
 
     /// Verify the internal consistency of a vector.
     ///

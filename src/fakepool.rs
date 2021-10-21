@@ -4,6 +4,8 @@
 
 #![allow(dead_code)]
 
+use std::prelude::v1::*;
+
 use std::marker::PhantomData;
 use std::ops::Deref;
 use std::rc::Rc as RRc;

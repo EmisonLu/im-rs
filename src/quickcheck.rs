@@ -1,3 +1,5 @@
+use std::prelude::v1::*;
+
 use crate::{HashMap, HashSet, OrdMap, OrdSet, Vector};
 use ::quickcheck::{Arbitrary, Gen};
 use std::hash::{BuildHasher, Hash};

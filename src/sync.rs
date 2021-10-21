@@ -2,11 +2,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+use std::prelude::v1::*;
+
 pub(crate) use self::lock::Lock;
 
 #[cfg(threadsafe)]
 mod lock {
-    use std::sync::{Arc, Mutex, MutexGuard};
+    use std::sync::{Arc, SgxMutex as Mutex, SgxMutexGuard as MutexGuard};
 
     /// Thread safe lock: just wraps a `Mutex`.
     pub(crate) struct Lock<A> {
